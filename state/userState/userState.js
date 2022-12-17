@@ -17,7 +17,9 @@ const userStates = () => {
       .then((data) =>
         userDispatch({
           type: "FETCHING_SUCCESS",
-          payload: data.data.users,
+          payload: data.data.users.map((user) => {
+            return { ...user, expand: false };
+          }),
         })
       )
       .catch(() => userDispatch({ type: "FETCHING_FAILED" }));

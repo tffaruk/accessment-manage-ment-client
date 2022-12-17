@@ -2,20 +2,51 @@ import {
   Collapse,
   TableCell,
   TableRow,
-  Typography,
-  Grid,
   IconButton,
+  TableBody,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
+import UserUpdate from "components/form/UserUpdate";
+import { useAppContext } from "context/state";
 
-const UserCard = ({ user, tools }) => {
-  console.log(user.expand);
+const UserCard = ({ user, tools, userDispatch }) => {
+  const [open, setOpen] = useState(false);
+  const { filterUserState, filterDisPatch } = useAppContext();
+  const handleExpand = (expand, id) => {
+    userDispatch({
+      type: "EXPAND_USER",
+      expand: expand,
+      id: id,
+    });
+  };
+
+  const handleOpen = (id) => {
+    setOpen(true);
+
+    filterDisPatch({
+      type: "SINGLE_USER",
+      id: id,
+    });
+  };
+
   return (
-    <>
+    <TableBody key={user._id}>
+      {filterUserState.users.length > 0 && (
+        <UserUpdate
+          users={filterUserState.users[0]}
+          setOpen={setOpen}
+          open={open}
+          userDispatch={userDispatch}
+        />
+      )}
       <TableRow>
         <TableCell>
-          <IconButton aria-label="expand row" size="small">
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => handleExpand(!user.expand, user.id)}
+          >
             <FeatherIcon
               icon={user.expand ? "minus-square" : "square"}
               style={{ color: "#ddd" }}
@@ -27,6 +58,21 @@ const UserCard = ({ user, tools }) => {
         <TableCell>{user.phone}</TableCell>
         <TableCell>{user.depertment}</TableCell>
         <TableCell>{user.designation}</TableCell>
+        <TableCell>
+          {" "}
+          <IconButton size="small" onClick={() => handleOpen(user._id)}>
+            <FeatherIcon icon="edit" style={{ color: "green" }} />
+          </IconButton>
+        </TableCell>
+        <TableCell>
+          {" "}
+          <IconButton
+            size="small"
+            // onClick={() => handleExpand(!user.expand, user.id)}
+          >
+            <FeatherIcon icon="trash" style={{ color: "red" }} />
+          </IconButton>
+        </TableCell>
       </TableRow>
 
       <TableRow>
@@ -35,20 +81,20 @@ const UserCard = ({ user, tools }) => {
           colSpan={8}
         >
           <Collapse in={user.expand} timeout="auto" unmountOnExit>
-            {tools.map((t, i) => (
+            {tools.map((tool, i) => (
               <div>
-                <p key={i}>{t.name}:</p>
-                {t.organization
-                  .filter((o) => o.user.includes("faruk"))
-                  .map((d) => (
-                    <p>{d.name}</p>
+                <p key={i}>{tool.name}:</p>
+                {tool.organization
+                  .filter((org) => org.user.includes("faruk"))
+                  .map((user, i) => (
+                    <p key={`user-${i}`}>{user.name}</p>
                   ))}
               </div>
             ))}
           </Collapse>
         </TableCell>
       </TableRow>
-    </>
+    </TableBody>
   );
 };
 

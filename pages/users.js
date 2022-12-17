@@ -1,9 +1,9 @@
 // import AdminPage from "@/layouts/AdminPage";
 import FullLayout from "@/layouts/FullLayout";
 import {
+  Button,
   Paper,
   Table,
-  TableBody,
   TableCell,
   TableContainer,
   TableHead,
@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import UserCard from "components/cards/UserCard";
+import UserForm from "components/form/UserForm";
 import { useAppContext } from "context/state";
 import { useEffect, useState } from "react";
 
@@ -19,13 +20,16 @@ import { useEffect, useState } from "react";
 
 const User = () => {
   const [user, setUser] = useState();
+  const [open, setOpen] = useState(false);
 
   const {
     userState: { loading, error, users },
     toolState: { tools },
     userDispatch,
   } = useAppContext();
-
+  const handleOpen = () => {
+    setOpen(true);
+  };
   let content;
   if (loading) {
     content = <Typography>Loading...</Typography>;
@@ -37,14 +41,9 @@ const User = () => {
     content = <Typography>Nothing to show</Typography>;
   }
   if (!loading && !error && users.length) {
-    content = users
-      .map((el) => {
-        return {
-          ...el,
-          expand: false,
-        };
-      })
-      .map((user) => <UserCard user={user} tools={tools} />);
+    content = users.map((user, i) => (
+      <UserCard user={user} key={i} tools={tools} userDispatch={userDispatch} />
+    ));
   }
 
   useEffect(() => {
@@ -54,19 +53,31 @@ const User = () => {
   // console.log(tools.map((t, i) => t.organization.filter((o) => o)));
   return (
     <FullLayout>
+      {/* insert user */}
+      <UserForm
+        open={open}
+        setOpen={setOpen}
+        userDispatch={userDispatch}
+        users={users}
+      />
+
+      <Button onClick={handleOpen}>+User</Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {/* <TableCell>Handle</TableCell> */}
+              <TableCell>Expand</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Depertment</TableCell>
               <TableCell>Designation</TableCell>
+              <TableCell>Update</TableCell>
+              <TableCell>Remove</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>{user}</TableBody>
+          {user}
+          {/* <TableBody>{user}</TableBody> */}
         </Table>
       </TableContainer>
     </FullLayout>
