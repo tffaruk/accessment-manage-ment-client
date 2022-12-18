@@ -1,6 +1,5 @@
 import { Modal, Box } from "@mui/material";
-
-const FormModal = ({ children, width, open, setOpen }) => {
+const FormModal = ({ children, width, open, setOpen, reset }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -11,8 +10,11 @@ const FormModal = ({ children, width, open, setOpen }) => {
     borderRadius: 2,
     boxShadow: 24,
     p: 4,
+    maxHeight: "80%",
+    overflowY: "auto",
   };
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
   return (

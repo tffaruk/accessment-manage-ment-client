@@ -34,7 +34,7 @@ const UserCard = ({ user, tools, userDispatch }) => {
   };
   const deleteUser = async (id) => {
     const res = await Axios.delete(`user/${id}`);
-    console.log(res);
+  
     if (res.status === 200) {
       userDispatch({
         type: "DELETE_USER",

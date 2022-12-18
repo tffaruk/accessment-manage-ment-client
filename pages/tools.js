@@ -44,7 +44,6 @@ const Tools = () => {
     setTool(content);
   }, [tools]);
 
-  // console.log(tools.map((t, i) => t.organization.filter((o) => o)));
   return (
     <FullLayout>
       {/* insert tool */}

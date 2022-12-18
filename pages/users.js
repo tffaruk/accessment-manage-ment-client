@@ -45,12 +45,12 @@ const User = () => {
       <UserCard user={user} key={i} tools={tools} userDispatch={userDispatch} />
     ));
   }
-  console.log(users);
+
   useEffect(() => {
     setUser(content);
   }, [users]);
 
-  // console.log(tools.map((t, i) => t.organization.filter((o) => o)));
+ 
   return (
     <FullLayout>
       {/* insert user */}

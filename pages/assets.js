@@ -6,7 +6,7 @@ import { useAppContext } from "context/state";
 
 const Assets = () => {
   const { assetState, assetDispatch } = useAppContext();
-  console.log(assetState)
+
   return (
     <FullLayout>
       <p>Assets</p>

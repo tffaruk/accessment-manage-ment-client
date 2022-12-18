@@ -8,7 +8,7 @@ import React, { useState } from "react";
 const UserForm = ({ open, setOpen, userDispatch, users }) => {
   const maxId = (state) => {
     const maxid = state.reduce((maxid, user) => Math.max(user.id, maxid), 0);
-    console.log(maxid + 1);
+ 
     return maxid + 1;
   };
 
@@ -20,11 +20,21 @@ const UserForm = ({ open, setOpen, userDispatch, users }) => {
     phone: "",
     joining_date: Date,
   });
-
+  const reset = () => {
+    setUser({
+      ...user,
+      name: "",
+      email: "",
+      depertment: "",
+      designation: "",
+      phone: "",
+      joining_date: Date,
+    });
+  };
   //   add user
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
+
     const res = await Axios.post("user", {
       ...user,
       id: maxId(users),
@@ -35,10 +45,11 @@ const UserForm = ({ open, setOpen, userDispatch, users }) => {
         payload: { ...user, id: maxId(users) },
       });
     }
+    reset();
   };
 
   return (
-    <FormModal width={400} open={open} setOpen={setOpen}>
+    <FormModal width={400} open={open} setOpen={setOpen} reset={reset}>
       <form onSubmit={handleSubmit}>
         <Grid>
           <Grid item xs={6}>

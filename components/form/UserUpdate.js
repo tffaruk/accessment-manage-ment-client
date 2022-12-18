@@ -14,7 +14,17 @@ const UserUpdate = ({ open, setOpen, userDispatch, users }) => {
     phone: users.phone,
     joining_date: new Date(users.joining_date).toLocaleDateString("en-CA"),
   });
-
+  const reset = () => {
+    setUser({
+      ...user,
+      name: users.name,
+      email: users.email,
+      depertment: users.depertment,
+      designation: users.designation,
+      phone: users.phone,
+      joining_date: new Date(users.joining_date).toLocaleDateString("en-CA"),
+    });
+  };
   //   add user
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -30,10 +40,11 @@ const UserUpdate = ({ open, setOpen, userDispatch, users }) => {
         id: users._id,
       });
     }
+    reset();
   };
 
   return (
-    <FormModal width={400} open={open} setOpen={setOpen}>
+    <FormModal width={400} open={open} setOpen={setOpen} reset={reset}>
       <form onSubmit={handleUpdate}>
         <Grid>
           <Grid item xs={6}>

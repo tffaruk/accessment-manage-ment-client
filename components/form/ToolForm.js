@@ -12,58 +12,93 @@ const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
   const [tool, setTool] = useState({
     name: "",
     prize: "",
-    organization: {
-      name: "",
-      user: [],
-    },
+    organization: [
+      {
+        name: "",
+        user: [],
+        id: 1,
+      },
+    ],
   });
+
+  const addOrganization = () => {
+    setTool({
+      ...tool,
+      organization: [
+        ...tool.organization,
+        { id: tool.organization.length + 1, name: "", user: [] },
+      ],
+    });
+  };
+
   const reset = () => {
     setTool({
       ...tool,
       name: "",
       prize: "",
-      organization: {
-        name: "",
-        user: [],
-      },
+      organization: [
+        {
+          name: "",
+          user: [],
+        },
+      ],
     });
   };
 
-  const handleToolUser = (e) => {
+  const handleToolUser = (e, name, id) => {
     setTool((tool) => ({
       ...tool,
-      organization: {
-        ...tool.organization,
-        user: e.target.type === "checkbox" ? e.target.checked : e.target.value,
-      },
+      organization: tool.organization.map((data) => {
+        if (data.id === id) {
+          return {
+            ...data,
+            user:
+              data.name === name
+                ? e.target.type === "checkbox"
+                  ? e.target.checked
+                  : e.target.value
+                : data.user,
+          };
+        } else {
+          return {
+            ...data,
+            user: data.user,
+          };
+        }
+      }),
+      //    {
+      //     ...tool.organization,
+      //     user: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+      //   },
     }));
   };
   //   add tool
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(tool);
     const res = await Axios.post("tool", {
-      name: tool.name,
-      prize: tool.prize,
-      organization: [tool.organization],
+      tool,
     });
     if (res.status === 200) {
       reset();
       setOpen(false);
       toolDispatch({
         type: "ADD_TOOL",
-        payload: {
-          name: tool.name,
-          prize: tool.prize,
-          organization: [tool.organization],
-        },
+        payload: tool,
       });
     }
   };
 
   return (
-    <FormModal width={400} open={open} setOpen={setOpen}>
-      <form onSubmit={handleSubmit}>
+    <FormModal width={400} open={open} setOpen={setOpen} reset={reset}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          overflowY: "auto",
+
+          margin: "auto",
+          maxHeight: "100%",
+        }}
+      >
         <Grid>
           <Grid item xs={6}>
             <Label htmlFor="name" required={true} label="name" />
@@ -94,60 +129,65 @@ const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
               required
             />
           </Grid>
-          <Box bgcolor="#ddd" padding={2} mb={1} borderRadius="2px">
-            <Grid item xs={6}>
-              <Label
-                htmlFor="organization"
-                required={true}
-                label="Organization name"
-              />
-              <TextField
-                id="organization"
-                placeholder="organization"
-                value={tool.organization.name}
-                onChange={(e) =>
-                  setTool({
-                    ...tool,
-                    organization: {
-                      ...tool.organization,
-                      name: e.target.value,
-                    },
-                  })
-                }
-                sx={{
-                  marginBottom: "10px",
-                }}
-                fullWidth
-                required
-              />
-            </Grid>
+          {tool.organization.map((org, i) => (
+            <Box bgcolor="#ddd" padding={2} mb={1} borderRadius="2px" key={i}>
+              <Grid item xs={6}>
+                <Label
+                  htmlFor="organization"
+                  required={true}
+                  label="Organization name"
+                />
+                <TextField
+                  id="organization"
+                  placeholder="organization"
+                  value={org.name}
+                  onChange={(e) =>
+                    setTool({
+                      ...tool,
+                      organization: tool.organization.map((el) => {
+                        return {
+                          ...el,
+                          name: org.id === el.id ? e.target.value : el.name,
+                        };
+                      }),
+                    })
+                  }
+                  sx={{
+                    marginBottom: "10px",
+                  }}
+                  fullWidth
+                  required
+                />
+              </Grid>
 
-            <Grid item xs={6}>
-              <Label htmlFor="user" required={true} label="Select User" />
+              <Grid item xs={6}>
+                <Label htmlFor="user" required={true} label="Select User" />
 
-              <Select
-                select
-                id="user"
-                variant="outlined"
-                label="User"
-                multiple={true}
-                value={tool.organization.user}
-                onChange={handleToolUser}
-                placeholder="Select User"
-                displayEmpty
-                fullWidth
-              >
-                <MenuItem value="" disabled>
-                  <em>Users</em>
-                </MenuItem>
-                {users.map((user, i) => (
-                  <MenuItem value={user.name} key={i}>
-                    {user.name}
+                <Select
+                  select
+                  id="user"
+                  variant="outlined"
+                  label="User"
+                  multiple={true}
+                  value={org.user}
+                  onChange={(e) => handleToolUser(e, org.name, org.id)}
+                  placeholder="Select User"
+                  displayEmpty
+                  fullWidth
+                >
+                  <MenuItem value="" disabled>
+                    <em>Users</em>
                   </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          </Box>
+                  {users.map((user, i) => (
+                    <MenuItem value={user.name} key={i}>
+                      {user.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Box>
+          ))}
+          <Button onClick={addOrganization}>Add more</Button>
           <Button variant="contained" color="primary" fullWidth type="submit">
             Submit
           </Button>

@@ -37,7 +37,7 @@ const ToolCard = ({ tool, tools, toolDispatch }) => {
   // };
   const deletetool = async (id) => {
     const res = await Axios.delete(`tool/${id}`);
-    console.log(res);
+    
     if (res.status === 200) {
       toolDispatch({
         type: "DELETE_TOOL",
