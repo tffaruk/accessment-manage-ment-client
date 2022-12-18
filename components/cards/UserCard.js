@@ -4,11 +4,14 @@ import {
   TableRow,
   IconButton,
   TableBody,
+  Typography,
+  Grid,
 } from "@mui/material";
 import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
 import UserUpdate from "components/form/UserUpdate";
 import { useAppContext } from "context/state";
+import Axios from "@/lib/axios";
 
 const UserCard = ({ user, tools, userDispatch }) => {
   const [open, setOpen] = useState(false);
@@ -29,7 +32,16 @@ const UserCard = ({ user, tools, userDispatch }) => {
       id: id,
     });
   };
-
+  const deleteUser = async (id) => {
+    const res = await Axios.delete(`user/${id}`);
+    console.log(res);
+    if (res.status === 200) {
+      userDispatch({
+        type: "DELETE_USER",
+        id: id,
+      });
+    }
+  };
   return (
     <TableBody key={user._id}>
       {filterUserState.users.length > 0 && (
@@ -66,10 +78,7 @@ const UserCard = ({ user, tools, userDispatch }) => {
         </TableCell>
         <TableCell>
           {" "}
-          <IconButton
-            size="small"
-            // onClick={() => handleExpand(!user.expand, user.id)}
-          >
+          <IconButton size="small" onClick={() => deleteUser(user._id)}>
             <FeatherIcon icon="trash" style={{ color: "red" }} />
           </IconButton>
         </TableCell>
@@ -81,15 +90,18 @@ const UserCard = ({ user, tools, userDispatch }) => {
           colSpan={8}
         >
           <Collapse in={user.expand} timeout="auto" unmountOnExit>
+            <Typography variant="h3">Permitions:</Typography>
             {tools.map((tool, i) => (
-              <div>
-                <p key={i}>{tool.name}:</p>
+              <Grid>
+                <Typography variant="h4" key={i}>
+                  {tool.name}:
+                </Typography>
                 {tool.organization
-                  .filter((org) => org.user.includes("faruk"))
-                  .map((user, i) => (
-                    <p key={`user-${i}`}>{user.name}</p>
+                  .filter((org) => org.user.includes(user.name))
+                  .map((user, key) => (
+                    <p key={`user-${key}`}>{user.name}</p>
                   ))}
-              </div>
+              </Grid>
             ))}
           </Collapse>
         </TableCell>

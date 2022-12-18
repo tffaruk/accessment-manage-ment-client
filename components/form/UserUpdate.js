@@ -12,23 +12,24 @@ const UserUpdate = ({ open, setOpen, userDispatch, users }) => {
     depertment: users.depertment,
     designation: users.designation,
     phone: users.phone,
-    joining_date: users.joining_date,
+    joining_date: new Date(users.joining_date).toLocaleDateString("en-CA"),
   });
 
   //   add user
   const handleUpdate = async (e) => {
     e.preventDefault();
- 
+
     const res = await Axios.patch(`user/${users._id}`, {
       ...user,
       id: users.id,
     });
-    // if (res.status === 200) {
-    //   userDispatch({
-    //     type: "UDATE_USER",
-    //     payload: { ...user, id: users.id },
-    //   });
-    // }
+    if (res.status === 200) {
+      userDispatch({
+        type: "UPDATE_USER",
+        payload: user,
+        id: users._id,
+      });
+    }
   };
 
   return (

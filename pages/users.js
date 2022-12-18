@@ -45,7 +45,7 @@ const User = () => {
       <UserCard user={user} key={i} tools={tools} userDispatch={userDispatch} />
     ));
   }
-
+  console.log(users);
   useEffect(() => {
     setUser(content);
   }, [users]);
@@ -61,7 +61,17 @@ const User = () => {
         users={users}
       />
 
-      <Button onClick={handleOpen}>+User</Button>
+      <Button
+        onClick={handleOpen}
+        variant="contained"
+        color="primary"
+        sx={{
+          color: "#fff",
+          marginBottom: "10px",
+        }}
+      >
+        +User
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

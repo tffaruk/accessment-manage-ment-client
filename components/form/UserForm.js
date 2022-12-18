@@ -92,25 +92,7 @@ const UserForm = ({ open, setOpen, userDispatch, users }) => {
               required={true}
               label="Select designation"
             />
-            {/* <Select
-              sx={{
-                marginBottom: "10px",
-              }}
-              onChange={(e) =>
-                setUser({ ...user, designation: e.target.value })
-              }
-              value={user.designation}
-              displayEmpty
-              fullWidth
-              placeholder="Select Role"
-            >
-              <MenuItem value="" disabled>
-                <em>Designation</em>
-              </MenuItem>
-              <MenuItem value="developer">Developer</MenuItem>
-              <MenuItem value="designer">Designer</MenuItem>
-              <MenuItem value="marketer">Marketer</MenuItem>
-            </Select> */}
+
             <TextField
               sx={{
                 marginBottom: "10px",

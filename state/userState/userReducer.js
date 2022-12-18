@@ -35,12 +35,36 @@ export const userReducer = (state, action) => {
         ...state,
         users: [...state.users, action.payload],
       };
-    case "SINGLE_USER":
+    case "UPDATE_USER":
+      return {
+        ...state,
+        users: state.users.map((user) => {
+          return {
+            ...user,
+            name: user._id === action.id ? action.payload.name : user.name,
+            email: user._id === action.id ? action.payload.email : user.email,
+            depertment:
+              user._id === action.id
+                ? action.payload.depertment
+                : user.depertment,
+            phone: user._id === action.id ? action.payload.phone : user.phone,
+            designation:
+              user._id === action.id
+                ? action.payload.designation
+                : user.designation,
+            joining_date:
+              user._id === action.id
+                ? action.payload.joining_date
+                : user.joining_date,
+          };
+        }),
+      };
+    case "DELETE_USER":
       return {
         ...state,
         users: state.users.filter((user) => user._id !== action.id),
       };
-    
+
     default:
       return state;
   }

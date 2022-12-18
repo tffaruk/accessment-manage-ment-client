@@ -17,7 +17,9 @@ const toolsState = () => {
       .then((data) =>
         toolDispatch({
           type: "FETCHING_SUCCESS",
-          payload: data.data.tools,
+          payload: data.data.tools.map((tool) => {
+            return { ...tool, expand: false };
+          }),
         })
       )
       .catch(() => toolDispatch({ type: "FETCHING_FAILED" }));
