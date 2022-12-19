@@ -19,6 +19,7 @@ const Tools = () => {
     toolState: { tools, loading, error },
     toolDispatch,
   } = useAppContext();
+
   const [tool, setTool] = useState();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {

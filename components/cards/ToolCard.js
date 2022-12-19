@@ -15,10 +15,17 @@ import FeatherIcon from "feather-icons-react";
 // import toolUpdate from "components/form/toolUpdate";
 import { useAppContext } from "context/state";
 import Axios from "@/lib/axios";
+import OrganiztionUpdateForm from "components/form/OrganiztionUpdateForm";
+import ToolUpdate from "components/form/UpdateTool";
 
-const ToolCard = ({ tool, tools, toolDispatch }) => {
-  // const [open, setOpen] = useState(false);
-  // const { filtertoolState, filterDisPatch } = useAppContext();
+const ToolCard = ({ tool }) => {
+  const [open, setOpen] = useState(false);
+  const {
+    toolDispatch,
+    filterOrganizationDisPatch,
+    filterOrganizationState: { organization: filterOrg, tools: filterTool },
+  } = useAppContext();
+
   const handleExpand = (expand, id) => {
     toolDispatch({
       type: "EXPAND_TOOL",
@@ -27,17 +34,26 @@ const ToolCard = ({ tool, tools, toolDispatch }) => {
     });
   };
 
-  // const handleOpen = (id) => {
-  //   setOpen(true);
+  const handleOpen = (id) => {
+    setOpen(true);
 
-  //   filterDisPatch({
-  //     type: "SINGLE_tool",
-  //     id: id,
-  //   });
-  // };
+    if (id === tool._id) {
+      filterOrganizationDisPatch({
+        type: "SINGLE_TOOL",
+        id: tool._id,
+      });
+    } else {
+      filterOrganizationDisPatch({
+        type: "SINGLE_ORGANIZATION",
+        toolId: tool._id,
+        orgId: id,
+      });
+    }
+  };
+
   const deletetool = async (id) => {
     const res = await Axios.delete(`tool/${id}`);
-    
+
     if (res.status === 200) {
       toolDispatch({
         type: "DELETE_TOOL",
@@ -45,16 +61,17 @@ const ToolCard = ({ tool, tools, toolDispatch }) => {
       });
     }
   };
+
   return (
     <TableBody key={tool._id}>
-      {/* {filtertoolState.tools.length > 0 && (
-        <toolUpdate
-          tools={filtertoolState.tools[0]}
+      {filterTool.length > 0 && (
+        <ToolUpdate
+          tools={filterTool[0]}
           setOpen={setOpen}
           open={open}
           toolDispatch={toolDispatch}
         />
-      )} */}
+      )}
       <TableRow>
         <TableCell>
           <IconButton
@@ -91,6 +108,14 @@ const ToolCard = ({ tool, tools, toolDispatch }) => {
           colSpan={8}
         >
           <Collapse in={tool.expand} timeout="auto" unmountOnExit>
+            {filterOrg.length > 0 && (
+              <OrganiztionUpdateForm
+                width={400}
+                open={open}
+                setOpen={setOpen}
+                filterOrg={filterOrg[0]}
+              />
+            )}
             <Typography variant="h3">Organizations:</Typography>
             {tool.organization.map((org, i) => (
               <Grid
@@ -101,7 +126,22 @@ const ToolCard = ({ tool, tools, toolDispatch }) => {
                   padding: "15px",
                 }}
               >
-                <Typography variant="h4">{org.name}</Typography>
+                <Grid
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  {" "}
+                  <Typography variant="h4" mr={3}>
+                    {org.name}
+                  </Typography>{" "}
+                  <IconButton size="small" onClick={() => handleOpen(org._id)}>
+                    <FeatherIcon icon="edit" style={{ color: "green" }} />
+                  </IconButton>{" "}
+                  <IconButton size="small" onClick={() => deletetool(tool._id)}>
+                    <FeatherIcon icon="trash" style={{ color: "red" }} />
+                  </IconButton>
+                </Grid>
                 <Typography>users:</Typography>
 
                 <List>

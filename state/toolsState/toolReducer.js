@@ -1,4 +1,5 @@
 export const toolReducer = (state, action) => {
+
   switch (action.type) {
     case "FETCHING_START":
       return {
@@ -38,10 +39,57 @@ export const toolReducer = (state, action) => {
         tools: [...state.tools, action.payload],
       };
     }
+    case "UPDATE_TOOL":
+      return {
+        ...state,
+        tools: state.tools.map((tool) => {
+          if (action.id === tool._id) {
+            return {
+              ...tool,
+              name: action.name,
+              prize: action.prize,
+              organization: action.organization,
+            };
+          } else {
+            return {
+              ...tool,
+              name: tool.name,
+              prize: tool.prize,
+              organization: tool.organization,
+            };
+          }
+        }),
+      };
     case "DELETE_TOOL":
       return {
         ...state,
         tools: state.tools.filter((tool) => tool._id !== action.id),
+      };
+    case "UPDATE_ORG":
+      return {
+        ...state,
+        tools: state.tools.map((tool) => {
+          {
+            return {
+              ...tool,
+              organization: tool.organization.map((org) => {
+                if (org._id === action.id) {
+                  return {
+                    ...org,
+                    name: action.payload.name,
+                    user: action.payload.user,
+                  };
+                } else {
+                  return {
+                    ...org,
+                    name: org.name,
+                    user: org.user,
+                  };
+                }
+              }),
+            };
+          }
+        }),
       };
 
     default:

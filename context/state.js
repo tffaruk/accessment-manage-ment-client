@@ -1,5 +1,6 @@
 import assetsState from "@/state/assetState/assetState";
 import coursesState from "@/state/courseState/courseState";
+import filterOrganization from "@/state/toolsState/filterOrganization";
 import toolsState from "@/state/toolsState/toolsState";
 import filterUser from "@/state/userState/filterUser";
 import { createContext, useContext } from "react";
@@ -12,6 +13,8 @@ export const AppWrapper = ({ children }) => {
   const { courseState, courseDispatch } = coursesState();
   const { assetState, assetDispatch } = assetsState();
   const { filterUserState, filterDisPatch } = filterUser(userState.users);
+  const { filterOrganizationState, filterOrganizationDisPatch } =
+    filterOrganization(toolState.tools);
   let state = {
     // users
     userState,
@@ -22,6 +25,10 @@ export const AppWrapper = ({ children }) => {
     // tools
     toolState,
     toolDispatch,
+    // for single organization
+    filterOrganizationState,
+    filterOrganizationDisPatch,
+
     // course
     courseState,
     courseDispatch,
