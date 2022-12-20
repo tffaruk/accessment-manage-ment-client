@@ -14,7 +14,7 @@ const OrganiztionUpdateForm = ({ open, setOpen, filterOrg }) => {
     name: filterOrg.name,
     user: filterOrg.user,
   });
-  console.log(filterOrg);
+// reset organization
   const reset = () => {
     setOrganizatiion({
       ...organization,

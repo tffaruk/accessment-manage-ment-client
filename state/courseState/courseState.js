@@ -17,7 +17,9 @@ const coursesState = () => {
       .then((data) =>
         courseDispatch({
           type: "FETCHING_SUCCESS",
-          payload: data.data.courses,
+          payload: data.data.courses.map((course) => {
+            return { ...course, expand: false };
+          }),
         })
       )
       .catch(() => courseDispatch({ type: "FETCHING_FAILED" }));
