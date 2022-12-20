@@ -6,7 +6,8 @@ export default function Index() {
   const [login, setLogin] = useState(false);
   return (
     <FullLayout>
-      {login ? "Welcome" : <LoginForm setLogin={setLogin} />}
+      Welcome to Access Management System
+      {/* {login ? "Welcome" : <LoginForm setLogin={setLogin} />} */}
     </FullLayout>
   );
 }
