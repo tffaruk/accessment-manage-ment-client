@@ -1,5 +1,4 @@
 export const toolReducer = (state, action) => {
-
   switch (action.type) {
     case "FETCHING_START":
       return {
@@ -46,9 +45,9 @@ export const toolReducer = (state, action) => {
           if (action.id === tool._id) {
             return {
               ...tool,
-              name: action.name,
-              prize: action.prize,
-              organization: action.organization,
+              name: action.payload.name,
+              prize: action.payload.prize,
+              organization: action.payload.organization,
             };
           } else {
             return {

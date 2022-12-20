@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
-// import toolUpdate from "components/form/toolUpdate";
 import { useAppContext } from "context/state";
 import Axios from "@/lib/axios";
 import OrganiztionUpdateForm from "components/form/OrganiztionUpdateForm";
@@ -25,7 +24,7 @@ const ToolCard = ({ tool }) => {
     filterOrganizationDisPatch,
     filterOrganizationState: { organization: filterOrg, tools: filterTool },
   } = useAppContext();
-
+// expand card
   const handleExpand = (expand, id) => {
     toolDispatch({
       type: "EXPAND_TOOL",
@@ -34,6 +33,7 @@ const ToolCard = ({ tool }) => {
     });
   };
 
+  // open form modal
   const handleOpen = (id) => {
     setOpen(true);
 
@@ -51,6 +51,8 @@ const ToolCard = ({ tool }) => {
     }
   };
 
+
+  // delete tool
   const deletetool = async (id) => {
     const res = await Axios.delete(`tool/${id}`);
 

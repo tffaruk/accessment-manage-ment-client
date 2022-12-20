@@ -1,12 +1,22 @@
 import Axios from "@/lib/axios";
-import { Button, TextField, Grid, Select, MenuItem, Box } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Grid,
+  Select,
+  MenuItem,
+  Box,
+  IconButton,
+} from "@mui/material";
+import FeatherIcon from "feather-icons-react";
 import Label from "components/FormLabel";
 import FormModal from "components/Modal";
 import { useAppContext } from "context/state";
 import { useState } from "react";
 
 const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
-  const {
+//   call users
+    const {
     userState: { users },
   } = useAppContext();
   const [tool, setTool] = useState({
@@ -14,14 +24,27 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
     prize: tools.prize,
     organization: tools.organization,
   });
-
+  // add new  organization field
   const addOrganization = () => {
     setTool({
       ...tool,
-      organization: [...tool.organization, { name: "", user: [] }],
+      organization: [
+        ...tool.organization,
+        { name: "", user: [], id: tool.organization.length + 1 },
+      ],
     });
   };
+  //   delete organization field
+  const deleteOrganization = (id) => {
+    if (tool.organization.map((org) => org.id).includes(id)) {
+      setTool({
+        ...tool,
+        organization: tool.organization.filter((org) => org.id !== id),
+      });
+    }
+  };
 
+  //   reset tool
   const reset = () => {
     setTool({
       ...tool,
@@ -31,11 +54,12 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
     });
   };
 
+  //   multiple user select
   const handleToolUser = (e, name, id) => {
     setTool((tool) => ({
       ...tool,
       organization: tool.organization.map((data) => {
-        if (data.id === id) {
+        if (data._id === id) {
           return {
             ...data,
             user:
@@ -60,7 +84,6 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
 
     const res = await Axios.patch(`tool/${tools._id}`, {
       tool,
-      id: tools._id,
     });
     if (res.status === 200) {
       reset();
@@ -68,10 +91,11 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
       toolDispatch({
         type: "UPDATE_TOOL",
         payload: tool,
+        id: tools._id,
       });
     }
   };
-  console.log(tool);
+
   return (
     <FormModal width={400} open={open} setOpen={setOpen} reset={reset}>
       <form
@@ -115,6 +139,17 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
           </Grid>
           {tool.organization.map((org, i) => (
             <Box bgcolor="#ddd" padding={2} mb={1} borderRadius="2px" key={i}>
+              <IconButton
+                size="small"
+                onClick={() => deleteOrganization(org.id)}
+                sx={{
+                  float: "right",
+                  marginTop: "-16px",
+                  marginRight: "-15px",
+                }}
+              >
+                <FeatherIcon icon="x" size={16} style={{ color: "red" }} />
+              </IconButton>
               <Grid item xs={6}>
                 <Label
                   htmlFor="organization"
@@ -131,7 +166,7 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
                       organization: tool.organization.map((el) => {
                         return {
                           ...el,
-                          name: org.id === el.id ? e.target.value : el.name,
+                          name: org._id === el._id ? e.target.value : el.name,
                         };
                       }),
                     })
@@ -154,7 +189,7 @@ const ToolUpdate = ({ open, setOpen, toolDispatch, tools }) => {
                   label="User"
                   multiple={true}
                   value={org.user}
-                  onChange={(e) => handleToolUser(e, org.name, org.id)}
+                  onChange={(e) => handleToolUser(e, org.name, org._id)}
                   placeholder="Select User"
                   displayEmpty
                   fullWidth

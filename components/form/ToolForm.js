@@ -1,11 +1,20 @@
 import Axios from "@/lib/axios";
-import { Button, TextField, Grid, Select, MenuItem, Box } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Grid,
+  Select,
+  MenuItem,
+  Box,
+  IconButton,
+} from "@mui/material";
+import FeatherIcon from "feather-icons-react";
 import Label from "components/FormLabel";
 import FormModal from "components/Modal";
 import { useAppContext } from "context/state";
 import { useState } from "react";
 
-const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
+const ToolForm = ({ open, setOpen, toolDispatch }) => {
   const {
     userState: { users },
   } = useAppContext();
@@ -20,7 +29,7 @@ const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
       },
     ],
   });
-
+  // add organization field
   const addOrganization = () => {
     setTool({
       ...tool,
@@ -30,7 +39,15 @@ const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
       ],
     });
   };
-
+  //   delete organization field
+  const deleteOrganization = (id) => {
+    if (tool.organization.map((org) => org.id).includes(id)) {
+      setTool({
+        ...tool,
+        organization: tool.organization.filter((org) => org.id !== id),
+      });
+    }
+  };
   const reset = () => {
     setTool({
       ...tool,
@@ -131,6 +148,17 @@ const ToolForm = ({ open, setOpen, toolDispatch, tools }) => {
           </Grid>
           {tool.organization.map((org, i) => (
             <Box bgcolor="#ddd" padding={2} mb={1} borderRadius="2px" key={i}>
+              <IconButton
+                size="small"
+                onClick={() => deleteOrganization(org.id)}
+                sx={{
+                  float: "right",
+                  marginTop: "-16px",
+                  marginRight: "-15px",
+                }}
+              >
+                <FeatherIcon icon="x" size={16} style={{ color: "red" }} />
+              </IconButton>
               <Grid item xs={6}>
                 <Label
                   htmlFor="organization"
