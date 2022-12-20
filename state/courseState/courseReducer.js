@@ -40,20 +40,20 @@ export const courseReducer = (state, action) => {
     case "UPDATE_COURSE":
       return {
         ...state,
-        tools: state.tools.map((tool) => {
-          if (action.id === tool._id) {
+        courses: state.courses.map((course) => {
+          if (action.id === course._id) {
             return {
-              ...tool,
+              ...course,
               name: action.payload.name,
               prize: action.payload.prize,
-              organization: action.payload.organization,
+              course: action.payload.course,
             };
           } else {
             return {
-              ...tool,
-              name: tool.name,
-              prize: tool.prize,
-              organization: tool.organization,
+              ...course,
+              name: course.name,
+              prize: course.prize,
+              course: course.course,
             };
           }
         }),
@@ -62,6 +62,34 @@ export const courseReducer = (state, action) => {
       return {
         ...state,
         courses: state.courses.filter((course) => course._id !== action.id),
+      };
+    case "UPDATE_SINGLE_COURSE":
+      return {
+        ...state,
+        courses: state.courses.map((course) => {
+          {
+            return {
+              ...course,
+              course: course.course.map((org) => {
+                if (org._id === action.id) {
+                  return {
+                    ...org,
+                    name: action.payload.name,
+                    user: action.payload.user,
+                    prize: action.payload.prize,
+                  };
+                } else {
+                  return {
+                    ...org,
+                    name: org.name,
+                    user: org.user,
+                    prize: org.prize,
+                  };
+                }
+              }),
+            };
+          }
+        }),
       };
     default:
       return state;

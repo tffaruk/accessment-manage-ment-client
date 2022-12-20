@@ -15,14 +15,18 @@ import {
 
 import FeatherIcon from "feather-icons-react";
 import Axios from "@/lib/axios";
+import CourseUpdate from "components/form/UpdateCourse";
+import SingleCourseUpdateForm from "components/form/SingleCourseUpdateForm";
 
 const CourseCard = ({ course }) => {
   const [open, setOpen] = useState(false);
   const {
     courseDispatch,
-    filterOrganizationDisPatch,
-    filterOrganizationState: { organization: filterOrg, tools: filterTool },
+
+    filterCoursesState: { courses: filterCourses, course: singleCourse },
+    filterCoursesDisPatch,
   } = useAppContext();
+  console.log(singleCourse);
   // expand card
   const handleExpand = (expand, id) => {
     courseDispatch({
@@ -35,17 +39,17 @@ const CourseCard = ({ course }) => {
   // open form modal
   const handleOpen = (id) => {
     setOpen(true);
-
+    console.log(id);
     if (id === course._id) {
-      filterOrganizationDisPatch({
-        type: "SINGLE_TOOL",
-        id: tool._id,
+      filterCoursesDisPatch({
+        type: "SINGLE_COURSES",
+        id: course._id,
       });
     } else {
-      filterOrganizationDisPatch({
-        type: "SINGLE_ORGANIZATION",
-        toolId: tool._id,
-        orgId: id,
+      filterCoursesDisPatch({
+        type: "SINGLE_COURSE_ITEM",
+        id: course._id,
+        courseId: id,
       });
     }
   };
@@ -55,7 +59,7 @@ const CourseCard = ({ course }) => {
     const res = await Axios.delete(`course/${id}`);
 
     if (res.status === 200) {
-        courseDispatch({
+      courseDispatch({
         type: "DELETE_COURSE",
         id: id,
       });
@@ -64,12 +68,12 @@ const CourseCard = ({ course }) => {
 
   return (
     <TableBody key={course._id}>
-      {filterTool.length > 0 && (
-        <ToolUpdate
-          tools={filterTool[0]}
+      {filterCourses.length > 0 && (
+        <CourseUpdate
+          courses={filterCourse[0]}
           setOpen={setOpen}
           open={open}
-          toolDispatch={toolDispatch}
+          courseDispatch={courseDispatch}
         />
       )}
       <TableRow>
@@ -110,16 +114,25 @@ const CourseCard = ({ course }) => {
           colSpan={8}
         >
           <Collapse in={course.expand} timeout="auto" unmountOnExit>
-            {filterOrg.length > 0 && (
+            {/* {singleCourse.length > 0 && (
               <OrganiztionUpdateForm
                 width={400}
                 open={open}
                 setOpen={setOpen}
                 filterOrg={filterOrg[0]}
               />
+            )} */}
+            {singleCourse.length > 0 && (
+              <SingleCourseUpdateForm
+                width={400}
+                open={open}
+                setOpen={setOpen}
+                singleCourse={singleCourse[0]}
+              />
             )}
+
             <Typography variant="h3">Courses:</Typography>
-            {course.courses.map((course, i) => (
+            {course.course.map((course, i) => (
               <Grid
                 key={i}
                 sx={{
@@ -159,6 +172,7 @@ const CourseCard = ({ course }) => {
                     </ListItem>
                   ))}
                 </List>
+                <Typography>Prize:{course.prize}</Typography>
               </Grid>
             ))}
           </Collapse>

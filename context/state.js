@@ -1,5 +1,6 @@
 import assetsState from "@/state/assetState/assetState";
 import coursesState from "@/state/courseState/courseState";
+import filterCourses from "@/state/courseState/filterCourses";
 import filterOrganization from "@/state/toolsState/filterOrganization";
 import toolsState from "@/state/toolsState/toolsState";
 import filterUser from "@/state/userState/filterUser";
@@ -15,6 +16,9 @@ export const AppWrapper = ({ children }) => {
   const { filterUserState, filterDisPatch } = filterUser(userState.users);
   const { filterOrganizationState, filterOrganizationDisPatch } =
     filterOrganization(toolState.tools);
+  const { filterCoursesState, filterCoursesDisPatch } = filterCourses(
+    courseState.courses
+  );
   let state = {
     // users
     userState,
@@ -32,6 +36,9 @@ export const AppWrapper = ({ children }) => {
     // course
     courseState,
     courseDispatch,
+    // for single course
+    filterCoursesState,
+    filterCoursesDisPatch,
     // assets
     assetState,
     assetDispatch,

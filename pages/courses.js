@@ -10,9 +10,8 @@ import {
   Button,
 } from "@mui/material";
 import CourseCard from "components/cards/CourseCard";
-import CourseForm from "components/form/CourseForm";
+import AddCourse from "components/form/AddCourse";
 import { useAppContext } from "context/state";
-
 import React, { useEffect, useState } from "react";
 
 const Course = () => {
@@ -48,7 +47,7 @@ const Course = () => {
 
   return (
     <FullLayout>
-      <CourseForm
+      <AddCourse
         open={open}
         setOpen={setOpen}
         courseDispatch={courseDispatch}
