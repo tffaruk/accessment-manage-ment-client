@@ -5,11 +5,8 @@ const filterCourses = () => {
   const {
     courseState: { courses },
   } = courseStates();
-  console.log(courses);
 
   const filterReducer = (state, action) => {
-    console.log(courses.filter((course) => course._id === action.id));
-
     switch (action.type) {
       case "SINGLE_COURSES":
         return {

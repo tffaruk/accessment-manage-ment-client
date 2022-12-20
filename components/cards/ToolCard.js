@@ -24,7 +24,7 @@ const ToolCard = ({ tool }) => {
     filterOrganizationDisPatch,
     filterOrganizationState: { organization: filterOrg, tools: filterTool },
   } = useAppContext();
-// expand card
+  // expand card
   const handleExpand = (expand, id) => {
     toolDispatch({
       type: "EXPAND_TOOL",
@@ -51,7 +51,6 @@ const ToolCard = ({ tool }) => {
     }
   };
 
-
   // delete tool
   const deletetool = async (id) => {
     const res = await Axios.delete(`tool/${id}`);
@@ -59,6 +58,18 @@ const ToolCard = ({ tool }) => {
     if (res.status === 200) {
       toolDispatch({
         type: "DELETE_TOOL",
+        id: id,
+      });
+    }
+  };
+  const deleteOrg = async (id) => {
+    const res = await Axios.patch(`tool/organization/delete/${tool._id}`, {
+      id,
+    });
+
+    if (res.status === 200) {
+      toolDispatch({
+        type: "DELETE_ORGANIZATION",
         id: id,
       });
     }
@@ -140,7 +151,7 @@ const ToolCard = ({ tool }) => {
                   <IconButton size="small" onClick={() => handleOpen(org._id)}>
                     <FeatherIcon icon="edit" style={{ color: "green" }} />
                   </IconButton>{" "}
-                  <IconButton size="small" onClick={() => deletetool(tool._id)}>
+                  <IconButton size="small" onClick={() => deleteOrg(org._id)}>
                     <FeatherIcon icon="trash" style={{ color: "red" }} />
                   </IconButton>
                 </Grid>
