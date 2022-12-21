@@ -1,4 +1,5 @@
 export const courseReducer = (state, action) => {
+
   switch (action.type) {
     case "FETCHING_START":
       return {
@@ -89,6 +90,18 @@ export const courseReducer = (state, action) => {
               }),
             };
           }
+        }),
+      };
+    case "DELETE_SINGLE_COURSE":
+      return {
+        ...state,
+        courses: state.courses.map((el) => {
+          return {
+            ...el,
+            course: el.course.filter(
+              (courseData) => courseData._id !== action.id
+            ),
+          };
         }),
       };
     default:

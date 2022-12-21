@@ -18,7 +18,7 @@ const Menuitems = [
   },
   {
     title: "Assets",
-    icon: "asset",
+    icon: "shopping-bag",
     href: "/assets",
     value: "assets",
   },

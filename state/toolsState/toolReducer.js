@@ -90,6 +90,18 @@ export const toolReducer = (state, action) => {
           }
         }),
       };
+    case "DELETE_ORG":
+      return {
+        ...state,
+        tools: state.tools.map((tool) => {
+          return {
+            ...tool,
+            organization: tool.organization.filter(
+              (el) => el._id !== action.id
+            ),
+          };
+        }),
+      };
 
     default:
       return state;

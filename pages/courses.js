@@ -10,7 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import CourseCard from "components/cards/CourseCard";
-import AddCourse from "components/form/AddCourse";
+import AddCourse from "components/courses/AddCourse";
 import { useAppContext } from "context/state";
 import React, { useEffect, useState } from "react";
 
@@ -62,7 +62,7 @@ const Course = () => {
           marginBottom: "10px",
         }}
       >
-        +Course
+        Add Course
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

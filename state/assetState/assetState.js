@@ -17,7 +17,9 @@ const assetsState = () => {
       .then((data) =>
         assetDispatch({
           type: "FETCHING_SUCCESS",
-          payload: data.data.assets,
+          payload: data.data.assets.map((aset) => {
+            return { ...aset, expand: false };
+          }),
         })
       )
       .catch(() => assetDispatch({ type: "FETCHING_FAILED" }));

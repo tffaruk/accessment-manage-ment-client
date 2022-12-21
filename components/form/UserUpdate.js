@@ -1,4 +1,5 @@
 import Axios from "@/lib/axios";
+import { dateInput } from "@/lib/dateInput";
 import { Button, TextField, Grid, Select, MenuItem } from "@mui/material";
 import Label from "components/FormLabel";
 import FormModal from "components/Modal";
@@ -12,7 +13,7 @@ const UserUpdate = ({ open, setOpen, userDispatch, users }) => {
     depertment: users.depertment,
     designation: users.designation,
     phone: users.phone,
-    joining_date: new Date(users.joining_date).toLocaleDateString("en-CA"),
+    joining_date: users.joining_date,
   });
   const reset = () => {
     setUser({
@@ -146,7 +147,7 @@ const UserUpdate = ({ open, setOpen, userDispatch, users }) => {
               id="joining_date"
               placeholder="joining_date"
               type="date"
-              defaultValue={user.joining_date}
+              defaultValue={dateInput(user.joining_date)}
               onChange={(e) =>
                 setUser({ ...user, joining_date: e.target.value })
               }

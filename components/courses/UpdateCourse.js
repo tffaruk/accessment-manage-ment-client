@@ -2,7 +2,7 @@ import Axios from "@/lib/axios";
 import FormModal from "components/Modal";
 import { useAppContext } from "context/state";
 import { useState } from "react";
-import CourseForm from "./CourseForm";
+import CourseForm from "../form/CourseForm";
 
 const CourseUpdate = ({ open, setOpen, courseDispatch, courses }) => {
   //   call users
@@ -33,7 +33,7 @@ const CourseUpdate = ({ open, setOpen, courseDispatch, courses }) => {
     });
   };
 
-// update course
+  // update course
   const handleUpdate = async (e) => {
     e.preventDefault();
 

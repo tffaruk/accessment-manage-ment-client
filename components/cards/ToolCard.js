@@ -15,10 +15,11 @@ import FeatherIcon from "feather-icons-react";
 import { useAppContext } from "context/state";
 import Axios from "@/lib/axios";
 import OrganiztionUpdateForm from "components/form/OrganiztionUpdateForm";
-import ToolUpdate from "components/form/UpdateTool";
+import ToolUpdate from "components/tools/UpdateTool";
 
 const ToolCard = ({ tool }) => {
   const [open, setOpen] = useState(false);
+  const [orgFrom, setOrgForm] = useState(false);
   const {
     toolDispatch,
     filterOrganizationDisPatch,
@@ -35,14 +36,14 @@ const ToolCard = ({ tool }) => {
 
   // open form modal
   const handleOpen = (id) => {
-    setOpen(true);
-
     if (id === tool._id) {
+      setOpen(true);
       filterOrganizationDisPatch({
         type: "SINGLE_TOOL",
         id: tool._id,
       });
     } else {
+      setOrgForm(true);
       filterOrganizationDisPatch({
         type: "SINGLE_ORGANIZATION",
         toolId: tool._id,
@@ -69,7 +70,7 @@ const ToolCard = ({ tool }) => {
 
     if (res.status === 200) {
       toolDispatch({
-        type: "DELETE_ORGANIZATION",
+        type: "DELETE_ORG",
         id: id,
       });
     }
@@ -124,8 +125,8 @@ const ToolCard = ({ tool }) => {
             {filterOrg.length > 0 && (
               <OrganiztionUpdateForm
                 width={400}
-                open={open}
-                setOpen={setOpen}
+                open={orgFrom}
+                setOpen={setOrgForm}
                 filterOrg={filterOrg[0]}
               />
             )}

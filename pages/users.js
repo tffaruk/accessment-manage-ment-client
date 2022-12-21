@@ -50,7 +50,6 @@ const User = () => {
     setUser(content);
   }, [users]);
 
- 
   return (
     <FullLayout>
       {/* insert user */}
@@ -70,7 +69,7 @@ const User = () => {
           marginBottom: "10px",
         }}
       >
-        +User
+        Add User
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

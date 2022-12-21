@@ -3,7 +3,7 @@ import Axios from "@/lib/axios";
 import FormModal from "components/Modal";
 import { useAppContext } from "context/state";
 import { useState } from "react";
-import CourseForm from "./CourseForm";
+import CourseForm from "../form/CourseForm";
 
 const AddCourse = ({ open, setOpen, courseDispatch }) => {
   const {

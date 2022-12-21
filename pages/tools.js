@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import ToolCard from "components/cards/ToolCard";
-import ToolForm from "components/form/ToolForm";
+import AddTool from "components/tools/AddTool";
 import { useAppContext } from "context/state";
 import React, { useEffect, useState } from "react";
 
@@ -48,7 +48,7 @@ const Tools = () => {
   return (
     <FullLayout>
       {/* insert tool */}
-      <ToolForm
+      <AddTool
         open={open}
         setOpen={setOpen}
         toolDispatch={toolDispatch}
@@ -64,7 +64,7 @@ const Tools = () => {
           marginBottom: "10px",
         }}
       >
-        +tool
+        Add Tool
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

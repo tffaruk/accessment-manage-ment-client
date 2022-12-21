@@ -15,11 +15,12 @@ import {
 
 import FeatherIcon from "feather-icons-react";
 import Axios from "@/lib/axios";
-import CourseUpdate from "components/form/UpdateCourse";
+import CourseUpdate from "components/courses/UpdateCourse";
 import SingleCourseUpdateForm from "components/form/SingleCourseUpdateForm";
 
 const CourseCard = ({ course }) => {
   const [open, setOpen] = useState(false);
+  const [courseFrom, setCourseForm] = useState(false);
   const {
     courseDispatch,
 
@@ -38,14 +39,14 @@ const CourseCard = ({ course }) => {
 
   // open form modal
   const handleOpen = (id) => {
-    setOpen(true);
-
     if (id === course._id) {
+      setOpen(true);
       filterCoursesDisPatch({
         type: "SINGLE_COURSES",
         id: course._id,
       });
     } else {
+      setCourseForm(true);
       filterCoursesDisPatch({
         type: "SINGLE_COURSE_ITEM",
         id: course._id,
@@ -129,8 +130,8 @@ const CourseCard = ({ course }) => {
             {singleCourse.length > 0 && (
               <SingleCourseUpdateForm
                 width={400}
-                open={open}
-                setOpen={setOpen}
+                open={courseFrom}
+                setOpen={setCourseForm}
                 singleCourse={singleCourse[0]}
               />
             )}

@@ -10,14 +10,8 @@ import {
 } from "@mui/material";
 import FeatherIcon from "feather-icons-react";
 import Label from "components/FormLabel";
-const CourseForm = ({
-  handleSubmit,
-  setCourse,
-  users,
-  course,
-}) => {
-
-
+import { dateInput } from "@/lib/dateInput";
+const CourseForm = ({ handleSubmit, setCourse, users, course }) => {
   const addCourses = () => {
     setCourse({
       ...course,
@@ -44,7 +38,6 @@ const CourseForm = ({
     }
   };
   //   reset course form
-
 
   const handleCourseUser = (e, name, id) => {
     setCourse((course) => ({
@@ -239,7 +232,11 @@ const CourseForm = ({
                 id="purchase_date"
                 placeholder="Purchase Date"
                 type="date"
-                value={courseData.purchase_date}
+                value={
+                  courseData.purchase_date
+                    ? dateInput(courseData.purchase_date)
+                    : courseData.purchase_date
+                }
                 onChange={(e) =>
                   setCourse({
                     ...course,
@@ -271,7 +268,11 @@ const CourseForm = ({
                 id="expire_date"
                 placeholder="Expire Date"
                 type="date"
-                value={courseData.expire_date}
+                defaultValue={
+                  courseData.expire_date
+                    ? dateInput(courseData.expire_date)
+                    : courseData.expire_date
+                }
                 onChange={(e) =>
                   setCourse({
                     ...course,

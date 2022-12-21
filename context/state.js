@@ -1,4 +1,5 @@
 import assetsState from "@/state/assetState/assetState";
+import filterAssets from "@/state/assetState/filterAsset";
 import coursesState from "@/state/courseState/courseState";
 import filterCourses from "@/state/courseState/filterCourses";
 import filterOrganization from "@/state/toolsState/filterOrganization";
@@ -19,6 +20,7 @@ export const AppWrapper = ({ children }) => {
   const { filterCoursesState, filterCoursesDisPatch } = filterCourses(
     courseState.courses
   );
+  const { filterAssetsDisPatch, filterAssetsState } = filterAssets();
   let state = {
     // users
     userState,
@@ -42,6 +44,9 @@ export const AppWrapper = ({ children }) => {
     // assets
     assetState,
     assetDispatch,
+    // filter asset
+    filterAssetsDisPatch,
+    filterAssetsState,
   };
   return <AppContext.Provider value={state}>{children}</AppContext.Provider>;
 };
